@@ -7,16 +7,13 @@ public class SunFlower : Plant
   public GameObject sunPerfab;//阳光预制体
   public float jumpMinDistance = 1f;//跳跃的最小距离
   public float jumpMaxDistance = 1.3f;//跳跃的最大距离
-  void OnEnable()
+
+  protected override void OnEnable()
   {
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
+    base.OnEnable();
     produceTimer = 0;
   }
-  void Awake()
-  {
-    anim = GetComponent<Animator>();
-  }
+
   protected override void EnableUpdate()
   {
     produceTimer += Time.deltaTime;
@@ -47,6 +44,6 @@ public class SunFlower : Plant
     base.Die();
     produceTimer = 0;
     AlterHP = HP;//死亡时恢复生命值
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[0], this.gameObject);
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantType.Sunflower], this.gameObject);
   }
 }

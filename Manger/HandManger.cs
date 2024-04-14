@@ -76,15 +76,18 @@ public class HandManger : MonoBehaviour
     //   }
     // }
   }
-  public List<Card> cardInstances;//多个Card实例
+  /// <summary>
+  /// $多个Card实例,根据植物类型来选择不同的Card实例,负责扣除对应阳光和转换为冷却状态
+  /// </summary>
+  public List<Card> cardInstances;
   public void OncCellClick(Cell cell)
   {
     if (currentPlant == null) return;//手上没有植物则不进行操作
     bool isSuccess = cell.AddPlant(currentPlant, currentPlant.offsetX, currentPlant.offsetY);//将当前植物添加到cell中
     if (isSuccess)
     {
-      SunManger.Insance.SubtractSunPoint(cardInstances[(int)currentPlant.plantType].needsumpoint);//扣除阳光
-      cardInstances[(int)currentPlant.plantType].TransToCooling();//转换为冷却状态
+      SunManger.Insance.SubtractSunPoint(cardInstances.Find(Card => Card.plantType == currentPlant.plantType).needsumpoint);//扣除阳光
+      cardInstances.Find(Card => Card.plantType == currentPlant.plantType).TransToCooling();//转换为冷却状态
       AudioManger.Instance.PlayClip(Config.PlantGrowers);//播放植物种植音效
       currentPlant = null;//将当前植物置空
       if (tipPlant != null)

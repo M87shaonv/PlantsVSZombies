@@ -1,7 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+public enum ZombieTypes
+{
+  /// <summary>
+  /// 普通僵尸
+  /// </summary>
+  NormalZombie,
+  /// <summary>
+  /// 旗帜僵尸
+  /// </summary>
+  flagZombie,
+  /// <summary>
+  /// 锥头僵尸
+  /// </summary>
+  ConeHeadZombie,
+  /// <summary>
+  /// 铁桶僵尸
+  /// </summary>
+  BucketheadZombie,
+  /// <summary>
+  /// 铁门僵尸
+  /// </summary>
+  IronGateZombie,
+  /// <summary>
+  /// 橄榄球僵尸
+  /// </summary>
+  RugbyZombie,
+  /// <summary>
+  /// 雪人僵尸
+  /// </summary>
+  SnowmanZombie,
+  /// <summary>
+  /// 篮球车僵尸
+  /// </summary>
+  BasketballShootingTruckZombie,
+  /// <summary>
+  /// 小丑僵尸
+  /// </summary>
+  JokerZombie,
+}
 public class ZombieManger : MonoBehaviour
 {
   public static ZombieManger Instance { get; private set; }
@@ -18,7 +56,7 @@ public class ZombieManger : MonoBehaviour
   int zombieCount = 0;//僵尸数量
   void Start()
   {
-    PlayerPrefs.SetInt("Level", 2);//初始化关卡数
+    PlayerPrefs.SetInt("Level", 1);//初始化关卡数
     //TODO:当前关卡数
     currentLevel = PlayerPrefs.GetInt("Level");
     Readtable();
@@ -44,7 +82,7 @@ public class ZombieManger : MonoBehaviour
 
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Space))
+    if (Input.GetKeyDown(KeyCode.Space))//空格暂停游戏
     {
       UIManger.Instance.settingsUI.PauseGame();
     }
@@ -91,7 +129,8 @@ public class ZombieManger : MonoBehaviour
   /// </summary>
   IEnumerator SpawnZombie(LevelItem levelItem)
   {
-    yield return new WaitForSeconds(levelItem.createTime);//指定时间后生成
+    float currentTime = levelItem.createTime + Time.time;//BUG 这里时间不对,不是每一波的开始时间,而是游戏开始运行时的时间加
+    yield return new WaitForSeconds(currentTime);//指定时间后生成
     //GameObject zombieperfab = Resources.Load("Perfabs/Zombie/Zombie" + levelItem.zombieType.ToString()) as GameObject;
     Zombie zombie = BufferPoolManager.Instance.GetObj(zombieTypeList[levelItem.zombieType]).GetComponent<Zombie>();//从缓存池中获取预制体
 
@@ -106,17 +145,6 @@ public class ZombieManger : MonoBehaviour
     order++;//排序order
             //!TMD,忘记了写生成下一波的僵尸的代码了,找了一下午,都nm快重构了
     UIManger.Instance.progressUI.SetProgress(currentWave / maxProgress);
-  }
-
-  /// <summary>
-  /// 暂停
-  /// </summary>
-  public void Pause()
-  {
-    foreach (Zombie zombie in zombies)
-    {
-      zombie.TransToPause();
-    }
   }
   public void RemoveZombie(Zombie zombie)
   {

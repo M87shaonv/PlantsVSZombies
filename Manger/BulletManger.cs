@@ -14,4 +14,6 @@ public class BulletManger : MonoBehaviour
   public GameObject SnowPeaBullet;
   public GameObject CabbageBullet;
   public GameObject BasketballBullet;
+  public GameObject CarambolaBullet;
+  public GameObject MagicCatBullet;
 }

@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
+
 # region 卡牌状态和植物类型的枚举
-enum CardState
+public enum CardState
 {
   /// <summary>
   /// 禁用状态
@@ -24,7 +24,7 @@ enum CardState
   Waiting,
 }
 /// <summary>
-/// 植物类型设置为pubic是为了在编辑器中修改
+/// 植物类型枚举
 /// </summary>
 public enum PlantType
 {
@@ -64,15 +64,29 @@ public enum PlantType
   /// 卷心菜投手
   /// </summary>
   CabbagePitcher,
+  /// <summary>
+  /// 老壁灯
+  /// </summary>
+  OldWallLamp,
+  /// <summary>
+  /// 杨桃
+  /// </summary>
+  Carambola,
+  /// <summary>
+  /// 魔法猫咪
+  /// </summary>
+  MagicCat,
 }
 #endregion
-public class Card : MonoBehaviour
+public class Card : MonoBehaviour, IPointerClickHandler
 {
-  private CardState cardState = CardState.Disable;//默认禁用
+  public CardState cardState = CardState.Disable;//默认禁用
   public PlantType plantType;
   public GameObject cardlight;
   public GameObject cardgray;
   public Image cardmask;
+  public int CardId;
+
   /// <summary>
   /// 总冷却时间
   /// </summary>
@@ -88,9 +102,13 @@ public class Card : MonoBehaviour
   /// </summary>
   [SerializeField]
   public int needsumpoint = 50;
-
+  void OnEnable()
+  {
+    CardId = (int)plantType;
+  }
   private void FixedUpdate()
   {
+    if (!GameManger.gameStarted) return;
     switch (cardState)
     {
       case CardState.Cooling:
@@ -144,7 +162,7 @@ public class Card : MonoBehaviour
   /// <summary>
   /// 转换为等待阳光状态
   /// </summary>
-  void TransToWaiting()
+  public void TransToWaiting()
   {
     cardState = CardState.Waiting;
     cardlight.SetActive(false);
@@ -154,7 +172,7 @@ public class Card : MonoBehaviour
   /// <summary>
   /// 转换为正常状态
   /// </summary>
-  void TransToReady()
+  public void TransToReady()
   {
     cardState = CardState.Ready;
     cardlight.SetActive(true);
@@ -208,5 +226,86 @@ public class Card : MonoBehaviour
   public void EnableCard()
   {
     TransToCooling();
+  }
+  public bool hasUsed = false;//是否已经使用
+  public bool hasLock = false;//是否锁定
+  public bool isMoving = false;//是否正在移动
+
+  public void OnPointerClick(PointerEventData eventData)
+  {
+    if (UIManger.Instance.selectCardBarUI.gameStart) return;//游戏已经开始,则不执行
+    if (isMoving || hasLock) return;//如果正在移动或锁定,则不执行
+    if (hasUsed)//如果已经使用,则移除卡牌
+    {
+      RemoveCard(gameObject);
+    }
+    else
+    {
+
+      AddCard();
+    }
+  }
+  public void RemoveCard(GameObject UseCard)
+  {
+    if (UseCard == null)
+    {
+      Debug.Log("UseCard is null");
+      return;
+    }
+    if (UIManger.Instance.cardListUI.ChooseCardsList.Contains(UseCard.GetComponent<Card>()))
+    {
+      GameObject card = UIManger.Instance.selectCardBarUI.Bg.transform.Find("Card" + CardId.ToString()).Find(CardId.ToString()).gameObject;
+      card.GetComponent<Card>().hasLock = false;
+      hasLock = false;//解锁卡牌
+      UIManger.Instance.cardListUI.ChooseCardsList.Remove(UseCard.GetComponent<Card>());//从选择卡牌列表移除
+
+
+      UIManger.Instance.cardListUI.currentIndex--;//当前选择卡牌索引减一
+      UIManger.Instance.cardListUI.UpdateCardPosition();//更新卡牌位置
+      UseCard.GetComponent<Card>().isMoving = true;
+      Transform cardTransform = UIManger.Instance.selectCardBarUI.Bg.transform.Find("Card" + CardId.ToString());
+      UseCard.transform.DOMove(cardTransform.position, 0.3f).OnComplete(
+        () =>
+        {
+          UIManger.Instance.selectCardBarUI.UnHightLightCard(CardId);//取消高亮选择卡牌
+          UseCard.GetComponent<Card>().isMoving = false;
+          Destroy(UseCard);//销毁卡牌
+        }
+      );
+    }
+  }
+
+  public void AddCard()
+  {
+    if (hasLock) return;//如果锁定,则不执行
+    if (UIManger.Instance.cardListUI.currentIndex > UIManger.Instance.cardListUI.Count - 1)
+    {
+      print("卡牌数量已达上限");
+      return;
+    }
+
+    GameObject useCard = Instantiate(UIManger.Instance.cardListUI.cardList[CardId].gameObject);//克隆卡牌
+    useCard.transform.Find("cardLight").GetComponent<Button>().enabled = false;//禁用卡牌按钮防止冲突
+    useCard.transform.SetParent(UIManger.Instance.cardListUI.transform);
+    useCard.transform.position = transform.position;
+    useCard.name = "useCard" + UIManger.Instance.cardListUI.currentIndex.ToString();
+    useCard.GetComponent<Card>().TransToReady();
+    Transform TragetTransform = UIManger.Instance.cardListUI.ChooseBar.transform.Find("Card" + UIManger.Instance.cardListUI.currentIndex);//找到添加卡牌的对应位置
+
+    UIManger.Instance.cardListUI.ChooseCardsList.Add(useCard.GetComponent<Card>());//添加到选择卡牌列表
+    UIManger.Instance.cardListUI.currentIndex++;//当前选择卡牌索引加一
+    UIManger.Instance.selectCardBarUI.HightLightCard(CardId);//高亮选择卡牌
+    useCard.GetComponent<Card>().hasUsed = true;//正在使用
+    useCard.GetComponent<Card>().isMoving = true;//正在移动
+    hasLock = true; //锁定卡牌
+    useCard.transform.DOMove(TragetTransform.position, 0.3f).OnComplete(
+      () =>
+      {
+        useCard.GetComponent<Card>().cardState = CardState.Ready;//设置卡牌状态为正常
+        useCard.GetComponent<Card>().isMoving = false;//动画结束后设置isMoving为false
+        useCard.transform.localPosition = Vector3.zero;//重置位置 
+        useCard.transform.SetParent(TragetTransform, false);//设置父物体为对应位置
+      }
+    );
   }
 }

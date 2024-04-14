@@ -30,12 +30,13 @@ public class Zombie : MonoBehaviour
   public int currentHP;//当前生命值
   protected Plant currentPlant;//当前吃植物的对象
   public GameObject zombieHead;//僵尸头
-  private bool havehead = true;//是否有头
+  protected bool havehead = true;//是否有头
   public int Row;
   public bool isPush = false;//有没有进入列表
   private Color origincolor;
+  public int zombieType;//僵尸类型
 
-  void OnEnable()
+  protected virtual void OnEnable()
   {
     this.GetComponent<Collider2D>().enabled = true;
     isPush = true;
@@ -129,6 +130,7 @@ public class Zombie : MonoBehaviour
       anim.SetBool("isEating", false);
       zombieState = ZombieState.Move;
       currentPlant = null;//离开植物对象时，将当前吃植物的对象设置为空
+      attackTimer = 0;//攻击计时器归零
     }
   }
   public virtual void TransToPause()
@@ -137,7 +139,9 @@ public class Zombie : MonoBehaviour
     anim.enabled = false;
     rigid.bodyType = RigidbodyType2D.Static;//刚体将不会受到物理效果
   }
-
+  /// <summary>
+  /// 僵尸受到伤害
+  /// </summary>
   public virtual void TakeDamage(int damage)
   {
     if (currentHP <= 0) return;
@@ -152,7 +156,6 @@ public class Zombie : MonoBehaviour
       currentHP = -1;
       Dead();
     }
-
     float hppercent = (float)currentHP / HP;//计算当前生命值百分比
     anim.SetFloat("HPpercent", hppercent);
 
@@ -165,6 +168,19 @@ public class Zombie : MonoBehaviour
       head.GetComponent<Animator>().Play("Zombie_LostHead");
       //Destroy(head, 2);
       StartCoroutine(BufferPoolManager.Instance.WaitAndPush(zombieHead, head, 1.6f));
+    }
+  }
+  /// <summary>
+  /// 僵尸加血
+  /// </summary>
+  public void AddBlood(int Blood)
+  {
+    this.currentHP += Blood;
+    StartCoroutine(AddBloodEffect.instance.SpawnBloodEffect(transform, AddBloodEffect.instance.ZombieBloodEffect));
+
+    if (this.currentHP >= HP)
+    {
+      this.currentHP = HP;
     }
   }
   protected IEnumerator ChangeColor()
@@ -181,8 +197,7 @@ public class Zombie : MonoBehaviour
     zombieState = ZombieState.Die;
     GetComponent<Collider2D>().enabled = false;
     ZombieManger.Instance.RemoveZombie(this);//从列表移除
-    //Destroy(gameObject, 2);
-    StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombiePrefab, gameObject, 1.5f));//回收到对象池
+
     if (ZombieManger.Instance.zombies.Count == 0)//开始下一波
     {
       ZombieManger.Instance.currentWave++;

@@ -12,4 +12,6 @@ public class BulletHitManger : MonoBehaviour
   public GameObject SnowPeaBulletHit;
   public GameObject CabbageBulletHit;
   public GameObject BasketballBulletHit;
+  public GameObject BlastEffect;
+  public GameObject CarambolaBulletHit;
 }

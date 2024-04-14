@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManger : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class UIManger : MonoBehaviour
   public GameObject lastwave;//最后一波僵尸
   public GameObject SuccessMenu;//成功菜单
   public GameObject FailMenu;//失败菜单
+  public SelectCardBarUI selectCardBarUI;//选择卡牌栏UI
 
   private void Awake()
   {
@@ -23,25 +25,26 @@ public class UIManger : MonoBehaviour
     cameraTransform = Camera.main.transform;
   }
   /// <summary>
-  /// 显示准备UI
+  /// 显示准备UI,然后调用回调函数StartGame
   /// </summary>
   public void ShowPrepareUI()
   {
     AudioManger.Instance.PlayClip(Config.prepare);
-    prepareUI.Show(StartGame);//调用回调函数
+    prepareUI.Show(Initialize);//调用回调函数
   }
   /// <summary>
-  /// 准备UI显示后
+  /// 开始游戏,显示对应UI
   /// </summary>
-  void StartGame()
+  void Initialize()
   {
-    Instance.cardListUI.ShowCardList();//显示卡片列表
+    //Instance.cardListUI.ShowCardList();//显示卡片列表
+    GameManger.gameStarted = true;//游戏开始
+    InitializeChooseCardsList();//初始化选择卡牌列表
     progressUI.Show();//显示进度UI
     shovel.SetActive(true);//显示铲子
     SunManger.Insance.StartProduceSun();//开始生产阳光
     ZombieManger.Instance.TableCreateZombie();//开始创建僵尸
     BgMusicManger.Instance.StartMusic(Config.BgminGameQucik);//播放游戏中背景音乐
-    GameManger.Instance.gameStarted = true;//游戏开始
   }
   public void ShowBigWaveUI()
   {
@@ -82,5 +85,13 @@ public class UIManger : MonoBehaviour
   public void FailHide()
   {
     FailMenu.SetActive(false);
+  }
+  void InitializeChooseCardsList()
+  {
+    HandManger.Instance.cardInstances = cardListUI.ChooseCardsList;//初始化选择卡牌列表
+    for (int i = 0; i < cardListUI.ChooseCardsList.Count; i++)
+    {
+      cardListUI.ChooseCardsList[i].cardlight.GetComponent<Button>().enabled = true;
+    }
   }
 }

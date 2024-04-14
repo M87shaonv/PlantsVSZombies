@@ -1,4 +1,6 @@
-public class FlagZombie : Zombie
+using UnityEngine;
+
+public class NormalZombie : Zombie
 {
   public override void Dead()
   {

@@ -5,10 +5,11 @@ public class MachineGunShooter : PeaShooter
 {
   public GameObject bigPeaBullet;
 
-  void OnEnable()
+  protected override void OnEnable()
   {
     AlterHP = HP;
     TransToDisable();//默认禁用状态
+    shootTimer = 0;
   }
   protected override void EnableUpdate()
   {
@@ -54,8 +55,6 @@ public class MachineGunShooter : PeaShooter
   public override void Die()
   {
     base.Die();
-    shootTimer = 0;//重置射击计时器
-    AlterHP = HP;//死亡时恢复生命值
     StopAllCoroutines();
     BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[7], this.gameObject);
   }

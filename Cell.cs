@@ -26,6 +26,7 @@ public class Cell : MonoBehaviour
     currentPlant = plant;
     currentPlant.transform.position = transform.position + new Vector3(offsetX, offsetY, 0);
     currentPlant.row = Row;//设置植物的行号
+    currentPlant.thisCell = this;
     plant.TransToEnable();
     return true;
   }
@@ -60,7 +61,14 @@ public class Cell : MonoBehaviour
       tipPlant.GetComponent<SpriteRenderer>().sortingOrder = 0;
       BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)HandManger.Instance.currentPlant.plantType], tipPlant.gameObject);//回收到缓冲池中
       tipPlant = null;//将当前植物置空
-
+    }
+  }
+  public void RemovePlant()
+  {
+    if (currentPlant != null)
+    {
+      BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)currentPlant.plantType], currentPlant.gameObject);//回收到缓冲池中
+      currentPlant = null;
     }
   }
 }

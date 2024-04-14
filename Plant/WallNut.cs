@@ -3,15 +3,14 @@ using UnityEngine;
 public class WallNut : Plant
 {
   private float percent;//血量百分比
-  void OnEnable()
+  protected override void OnEnable()
   {
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
+
+    base.OnEnable();
   }
   void Awake()
   {
     anim = GetComponent<Animator>();
-    AlterHP = HP;
   }
   protected override void EnableUpdate()
   {
@@ -29,6 +28,6 @@ public class WallNut : Plant
   {
     base.Die();
     AlterHP = HP;//死亡时恢复生命值
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[3], this.gameObject);
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantType.WallNut], this.gameObject);
   }
 }

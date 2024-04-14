@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class BasketballShootingTruckZombie : Zombie
@@ -21,7 +19,7 @@ public class BasketballShootingTruckZombie : Zombie
   /// 射击动画切换偏移量
   /// </summary>
   public float OffestAnim = 0.5f;
-  void OnEnable()
+  protected override void OnEnable()
   {
     this.GetComponent<Collider2D>().enabled = true;
     isPush = true;
@@ -84,11 +82,16 @@ public class BasketballShootingTruckZombie : Zombie
     if (currentHP <= 0)
     {
       currentHP = -1;
-      Dead();
+      this.Dead();
     }
 
     float hppercent = (float)currentHP / HP;//计算当前生命值百分比
     anim.SetFloat("HPpercent", hppercent);
+  }
+  public override void Dead()
+  {
+    base.Dead();
+    StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombieTypeList[zombieType], gameObject, 1.5f));//回收到对象池
   }
   void ShootBasketball()//射击
   {
@@ -112,11 +115,7 @@ public class BasketballShootingTruckZombie : Zombie
     yield return new WaitForSeconds(time);
     anim.SetInteger("Shoot", 1);
   }
-  public override void Dead()//爆炸
-  {
-    base.Dead();
-  }
-  
+
   void OnTriggerEnter2D(Collider2D other)
   {
     if (other.CompareTag("Plant"))

@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class RugbyZombie : Zombie
 {
-  void OnEnable()
+  protected override void OnEnable()
   {
-    isPush = true;
+
     this.GetComponent<Collider2D>().enabled = true;
+    isPush = true;
     zombieState = ZombieState.Move;
     currentHP = HP;
     currentPlant = null;
@@ -49,7 +50,7 @@ public class RugbyZombie : Zombie
   public override void Dead()
   {
     base.Dead();
-    StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombieTypeList[5], this.gameObject, 6));
+    StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombieTypeList[zombieType], this.gameObject, 6));
   }
   void DeadMove()
   {

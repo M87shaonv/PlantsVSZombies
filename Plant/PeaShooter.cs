@@ -17,12 +17,12 @@ public class PeaShooter : Plant
   /// 射击动画切换偏移量
   /// </summary>
   public float OffestAnim = 0.5f;
-  void OnEnable()
+  protected override void OnEnable()
   {
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
+    base.OnEnable();
     shootTimer = 0;
   }
+
   protected override void EnableUpdate()
   {
     if (ZombieEvent.Instance.zombieRows[row].Count == 1) return;//@如果该行没有僵尸，则不再射击
@@ -53,7 +53,8 @@ public class PeaShooter : Plant
     shootTimer = 0;//重置射击计时器
     AlterHP = HP;//死亡时恢复生命值
     StopAllCoroutines();
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[2], this.gameObject);
+
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantTypes.PeaShooter], this.gameObject);
   }
   /// <summary>
   /// 等待指定时间后执行指定动作

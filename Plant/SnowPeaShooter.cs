@@ -3,10 +3,10 @@ using UnityEngine;
 public class SnowPeaShooter : PeaShooter
 {
 
-  void OnEnable()
+  protected override void OnEnable()
   {
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
+    base.OnEnable();
+    shootTimer = 0;
   }
   protected override void EnableUpdate()
   {
@@ -35,6 +35,6 @@ public class SnowPeaShooter : PeaShooter
     shootTimer = 0;//重置射击计时器
     AlterHP = HP;//死亡时恢复生命值
     StopAllCoroutines();
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[6], this.gameObject);
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantType.SnowPeaShooter], this.gameObject);
   }
 }

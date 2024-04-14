@@ -38,13 +38,13 @@ public class SunManger : MonoBehaviour
   private float produceTimer = 10;//自然阳光产生计时器
   public GameObject sunPerfab;//阳光预制体
 
-  private bool isStartProduce = false;
+  private bool isStartProduce = false;//是否开始产生阳光
 
   private void Start()
   {
+    StopProduceSun();
     UpdateSunPointText();
     CalculateSunPointTextPosition();
-    //StartProduceSun();
   }
 
   private void FixedUpdate()

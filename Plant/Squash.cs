@@ -6,12 +6,7 @@ public class Squash : Plant
   public int attack;
   private int attackCount = 2;
   public BoxCollider2D boxCollider;
-  void OnEnable()
-  {
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
-    attackCount = 2;
-  }
+
   void Awake()
   {
     anim = GetComponent<Animator>();

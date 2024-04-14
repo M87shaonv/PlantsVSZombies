@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class CabbagePitcher : PeaShooter
 {
-  void OnEnable()
+  protected override void OnEnable()
   {
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
+    base.OnEnable();
     shootTimer = 0;
   }
   protected override void EnableUpdate()
@@ -38,6 +37,6 @@ public class CabbagePitcher : PeaShooter
     shootTimer = 0;//重置射击计时器
     AlterHP = HP;//死亡时恢复生命值
     StopAllCoroutines();
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[7], this.gameObject);
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantTypes.CabbagePitcher], this.gameObject);
   }
 }

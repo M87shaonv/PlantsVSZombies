@@ -1,14 +1,13 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PeaShooterOne : PeaShooter
 {
 
-  void OnEnable()
+  protected override void OnEnable()
   {
-
-    AlterHP = HP;
-    TransToDisable();//默认禁用状态
+    base.OnEnable();
+    shootTimer = 0;//重置射击计时器
+    AlterHP = HP;//死亡时恢复生命值
   }
   protected override void EnableUpdate()
   {
@@ -26,9 +25,7 @@ public class PeaShooterOne : PeaShooter
   public override void Die()
   {
     base.Die();
-    shootTimer = 0;//重置射击计时器
-    AlterHP = HP;//死亡时恢复生命值
     StopAllCoroutines();
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[1], this.gameObject);
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantTypes.PeaShooterOne], this.gameObject);
   }
 }

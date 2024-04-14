@@ -21,6 +21,12 @@ public class Plant : MonoBehaviour
   protected Animator anim;
   public float offsetX = 0; // X轴偏移量
   public float offsetY = 0; // Y轴偏移量
+  public Cell thisCell;//当前植物所在的格子
+  protected virtual void OnEnable()
+  {
+    AlterHP = HP;
+    TransToDisable();//默认禁用状态
+  }
   void Start()
   {
     anim = GetComponent<Animator>();
@@ -76,7 +82,6 @@ public class Plant : MonoBehaviour
   {
     //@ 启用时将通知事件管理器生成了植物在哪一行
     ZombieEvent.Instance.OnPlantEntered(row, this);
-
     plantState = PlantState.Enable;
     GetComponent<Animator>().enabled = true;
     GetComponent<BoxCollider2D>().enabled = true;
@@ -84,7 +89,7 @@ public class Plant : MonoBehaviour
   /// <summary>
   /// 受到攻击
   /// </summary>
-  public void TakeDamage(int damage)
+  public virtual void TakeDamage(int damage)
   {
     this.AlterHP -= damage;
     GetComponent<SpriteRenderer>().color = Color.white;
@@ -95,10 +100,24 @@ public class Plant : MonoBehaviour
       Die();
     }
   }
+  /// <summary>
+  /// 植物加血
+  /// </summary>
+  public void AddBlood(int blood)
+  {
+    this.AlterHP += blood;
+    StartCoroutine(AddBloodEffect.instance.SpawnBloodEffect(transform, AddBloodEffect.instance.BloodEffect));
+    if (this.AlterHP >= HP)
+    {
+      this.AlterHP = HP;
+    }
+  }
+
   public virtual void Die()
   {
     //@ 在死亡时将该植物从该行移除
     ZombieEvent.Instance.OnPlantExited(row, this);
+    thisCell.RemovePlant();
   }
   bool isColorChanging = false; // 添加一个标志
   IEnumerator ColorChange()//受击高亮后的颜色恢复
@@ -118,5 +137,10 @@ public class Plant : MonoBehaviour
   void OnMouseExit()
   {
     GetComponent<SpriteRenderer>().color = origincolor;
+  }
+  public void TransToPause()
+  {
+    plantState = PlantState.Disable;
+    anim.enabled = false;
   }
 }

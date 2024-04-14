@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SnowmanZombie : Zombie
 {
-  void OnEnable()
+  protected override void OnEnable()
   {
     isPush = true;
     this.GetComponent<Collider2D>().enabled = true;
@@ -49,7 +49,7 @@ public class SnowmanZombie : Zombie
   public override void Dead()
   {
     base.Dead();
-    StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombieTypeList[6], this.gameObject, 6));
+    StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombieTypeList[zombieType], this.gameObject, 6));
   }
   void DeadMove()
   {
