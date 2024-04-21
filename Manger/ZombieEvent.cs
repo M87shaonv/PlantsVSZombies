@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public class ZombieEvent
@@ -13,6 +14,39 @@ public class ZombieEvent
       }
       return _instance;
     }
+  }
+  #region sb才用数组
+  // Zombie[] SkyZombie = new Zombie[] { }; // 天空僵尸
+  // public void AddSkyZombie(Zombie AddSkyZombie)// 添加天空僵尸
+  // {
+  //   Array.Resize(ref SkyZombie, SkyZombie.Length + 1); // 扩容数组
+  //   SkyZombie[SkyZombie.Length - 1] = AddSkyZombie;
+  // }
+  // public void RemoveSkyZombie(Zombie RemoveSkyZombie)
+  // {
+  //   for (int i = 0; i < SkyZombie.Length; i++)
+  //   {
+  //     if (SkyZombie[i] == RemoveSkyZombie)
+  //     {
+  //       for (int j = i; j < SkyZombie.Length - 1; j++)
+  //       {
+  //         SkyZombie[j] = SkyZombie[j + 1];
+  //       }
+  //       Array.Resize(ref SkyZombie, SkyZombie.Length - 1); // 缩减数组
+  //       break; // 找到并移除之后退出循环
+  //     }
+  //   }
+  // }
+  #endregion
+
+  public List<Zombie> SkyZombies = new List<Zombie>();// 僵尸列表
+  public void AddZombie(Zombie zombie)
+  {
+    SkyZombies.Add(zombie);
+  }
+  public void RemoveZombie(Zombie zombie)
+  {
+    SkyZombies.Remove(zombie);
   }
 
   //每一行的僵尸列表

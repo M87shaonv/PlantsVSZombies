@@ -8,7 +8,7 @@ public class FirePeaBullet : PeaBullet
   }
   void OnTriggerEnter2D(Collider2D other)
   {
-    if (other.tag == "Zombie")
+    if (other.CompareTag("Zombie"))
     {
       AudioManger.Instance.PlayClip(Config.peaShoot);
       //Destroy(this.gameObject);

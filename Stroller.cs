@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,8 @@ public class Stroller : MonoBehaviour
     {
       isCrash = true;
       AudioManger.Instance.PlayClip(Config.Stroller);
-      other.GetComponent<Zombie>().Dead();
+      other.GetComponent<Zombie>().TakeDamage(10000);
+
     }
   }
   void Update()

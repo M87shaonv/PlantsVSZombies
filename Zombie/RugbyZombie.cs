@@ -54,7 +54,7 @@ public class RugbyZombie : Zombie
   }
   void DeadMove()
   {
-    rigid.MovePosition(rigid.position + Vector2.right * AlterMoveSpeed * Time.deltaTime);
+    rigid.MovePosition(rigid.position + Vector2.left * AlterMoveSpeed * Time.deltaTime);
     spriteRenderer.color = new Color32(220, 220, 220, 255);
     AlterMoveSpeed = 5;
   }

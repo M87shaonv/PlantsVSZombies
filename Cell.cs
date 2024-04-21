@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Cell : MonoBehaviour
@@ -5,6 +6,8 @@ public class Cell : MonoBehaviour
   public static Cell Instance;
   public Plant currentPlant;//当前cell种植的植物
   public int Row;//当前cell的行号
+  bool CanGrow = true;//当前cell是否可以生长植物
+  public GameObject Ice;//冰车僵尸走过显示的冰层
   void Awake()
   {
     Instance = this;
@@ -14,7 +17,8 @@ public class Cell : MonoBehaviour
   /// </summary>
   private void OnMouseDown()
   {
-    HandManger.Instance.OncCellClick(this);
+    if (CanGrow)
+      HandManger.Instance.OncCellClick(this);
   }
   public bool AddPlant(Plant plant, float offsetX = 0, float offsetY = 0)
   {
@@ -57,7 +61,6 @@ public class Cell : MonoBehaviour
   {
     if (HandManger.Instance.currentPlant != null)
     {
-      tipPlant.GetComponent<SpriteRenderer>().color = new Color32(220, 220, 220, 250);
       tipPlant.GetComponent<SpriteRenderer>().sortingOrder = 0;
       BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)HandManger.Instance.currentPlant.plantType], tipPlant.gameObject);//回收到缓冲池中
       tipPlant = null;//将当前植物置空
@@ -70,5 +73,20 @@ public class Cell : MonoBehaviour
       BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)currentPlant.plantType], currentPlant.gameObject);//回收到缓冲池中
       currentPlant = null;
     }
+  }
+  public void DisableCell()
+  {
+    CanGrow = false;
+    StartCoroutine(IEEnableCell(60));
+  }
+  public void EnableCell()
+  {
+    CanGrow = true;
+    this.GetComponent<SpriteRenderer>().sprite = null;
+  }
+  IEnumerator IEEnableCell(float delay)
+  {
+    yield return new WaitForSeconds(delay);
+    EnableCell();
   }
 }

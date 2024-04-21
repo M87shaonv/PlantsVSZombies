@@ -46,8 +46,9 @@ public class Zombie : MonoBehaviour
     attackTimer = 0;
     havehead = true;
     AlterMoveSpeed = moveSpeed;
+    spriteRenderer.sortingOrder++;
   }
-  protected void Start()
+  protected void Awake()
   {
     rigid = this.GetComponent<Rigidbody2D>();
     anim = this.GetComponent<Animator>();
@@ -162,12 +163,9 @@ public class Zombie : MonoBehaviour
     if (hppercent < 0.4f && havehead)//是否掉头
     {
       havehead = false;
-      // GameObject head = GameObject.Instantiate(zombieHead, transform.position, Quaternion.identity);
       GameObject head = BufferPoolManager.Instance.GetObj(zombieHead);
       head.transform.position = transform.position;
-      head.GetComponent<Animator>().Play("Zombie_LostHead");
-      //Destroy(head, 2);
-      StartCoroutine(BufferPoolManager.Instance.WaitAndPush(zombieHead, head, 1.6f));
+      BulletHitManger.Instance.PushEffect(zombieHead, head, 1.5f);
     }
   }
   /// <summary>
@@ -176,12 +174,13 @@ public class Zombie : MonoBehaviour
   public void AddBlood(int Blood)
   {
     this.currentHP += Blood;
-    StartCoroutine(AddBloodEffect.instance.SpawnBloodEffect(transform, AddBloodEffect.instance.ZombieBloodEffect));
-
+    currentHP = Mathf.Clamp(currentHP, -1, HP);//防止超过最大血量,-1防止0血量导致的未知Bug
     if (this.currentHP >= HP)
     {
       this.currentHP = HP;
     }
+    StartCoroutine(BulletHitManger.Instance.SpawnZombieBloodEffect(transform));
+
   }
   protected IEnumerator ChangeColor()
   {

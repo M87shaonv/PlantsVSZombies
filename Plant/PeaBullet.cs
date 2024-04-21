@@ -26,6 +26,7 @@ public class PeaBullet : MonoBehaviour
   {
     if (other.CompareTag("Zombie"))
     {
+
       AudioManger.Instance.PlayClip(Config.peaShoot);
 
       BufferPoolManager.Instance.PushObj(BulletManger.Instance.PeaBullet, this.gameObject);
