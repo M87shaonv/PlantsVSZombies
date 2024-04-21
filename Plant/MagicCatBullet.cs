@@ -33,6 +33,15 @@ public class MagicCatBullet : PeaBullet
     {
       Transform nearestEnemy = null;
       float nearestEnemyDistance = Mathf.Infinity;//初始化距离为无穷大
+      foreach (var Zombie in ZombieEvent.Instance.SkyZombies)//:计算天空僵尸
+      {
+        float distance = Vector2.Distance(transform.position, Zombie.transform.position);
+        if (distance < nearestEnemyDistance)
+        {
+          nearestEnemy = Zombie.transform;//更新最近的僵尸
+          nearestEnemyDistance = distance;//更新最近的距离
+        }
+      }
       foreach (var Zombie in ZombieManger.Instance.zombies)
       {
         //计算子弹当前位置与僵尸位置之间的二维距离,以此判断是否为最近的僵尸
@@ -43,7 +52,7 @@ public class MagicCatBullet : PeaBullet
           nearestEnemyDistance = distance;//更新最近的距离
         }
       }
-      if (nearestEnemy != null)
+      if (nearestEnemy.GetComponent<Zombie>().currentHP > 0 && nearestEnemy != null)
       {
         this.target = nearestEnemy;
         state = BulletState.Attack;//切换到攻击状态
@@ -57,7 +66,7 @@ public class MagicCatBullet : PeaBullet
 
   void AttackTarget()
   {
-    if (target != null)
+    if (target != null && target.GetComponent<Zombie>().currentHP > 0)
     {
       // 获取目标方向
       Vector3 direction = (target.position - transform.position).normalized;
@@ -82,6 +91,12 @@ public class MagicCatBullet : PeaBullet
       StopAllCoroutines();
       BufferPoolManager.Instance.PushObj(BulletManger.Instance.MagicCatBullet, this.gameObject);
       other.GetComponent<Zombie>().TakeDamage(attack);
+    }
+    if (other.CompareTag("SkyZombie"))
+    {
+      StopAllCoroutines();
+      BufferPoolManager.Instance.PushObj(BulletManger.Instance.MagicCatBullet, this.gameObject);
+      other.GetComponent<Zombie>().TakeDamage(1);
     }
   }
 }

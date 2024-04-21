@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 植物状态
 /// </summary>
-enum PlantState
+public enum PlantState
 {
   Disable,
   Enable,
@@ -12,7 +12,7 @@ enum PlantState
 public class Plant : MonoBehaviour
 {
   public static Plant instance { get; private set; }
-  PlantState plantState = PlantState.Disable;//默认禁用
+  public PlantState plantstate = PlantState.Disable;//默认禁用
   public PlantType plantType;
   public float HP = 100;//植物原血量
   public float AlterHP;//植物扣血的血量
@@ -39,7 +39,7 @@ public class Plant : MonoBehaviour
 
   private void Update()
   {
-    switch (plantState)
+    switch (plantstate)
     {
       case PlantState.Disable:
         DisableUpdate();
@@ -68,7 +68,7 @@ public class Plant : MonoBehaviour
   /// </summary>
   public void TransToDisable()
   {
-    plantState = PlantState.Disable;
+    plantstate = PlantState.Disable;
     GetComponent<Animator>().enabled = false;//禁用动画
     //! 因为cell和plant都有BoxCollider2D,植物的Collier把cell的Collier阻挡了,就会导致种植异常
     //所以需要在生成植物时将Collier关闭
@@ -82,7 +82,7 @@ public class Plant : MonoBehaviour
   {
     //@ 启用时将通知事件管理器生成了植物在哪一行
     ZombieEvent.Instance.OnPlantEntered(row, this);
-    plantState = PlantState.Enable;
+    plantstate = PlantState.Enable;
     GetComponent<Animator>().enabled = true;
     GetComponent<BoxCollider2D>().enabled = true;
   }
@@ -106,11 +106,12 @@ public class Plant : MonoBehaviour
   public void AddBlood(int blood)
   {
     this.AlterHP += blood;
-    StartCoroutine(AddBloodEffect.instance.SpawnBloodEffect(transform, AddBloodEffect.instance.BloodEffect));
+    AlterHP = Mathf.Clamp(AlterHP, -1, HP);//防止超过最大血量,-1防止0血量导致的未知Bug
     if (this.AlterHP >= HP)
     {
       this.AlterHP = HP;
     }
+    StartCoroutine(BulletHitManger.Instance.SpawnBloodEffect(transform));
   }
 
   public virtual void Die()
@@ -132,15 +133,15 @@ public class Plant : MonoBehaviour
   }
   void OnMouseEnter()
   {
-    GetComponent<SpriteRenderer>().color = Color.white;
+    this.GetComponent<SpriteRenderer>().color = Color.white;
   }
   void OnMouseExit()
   {
-    GetComponent<SpriteRenderer>().color = origincolor;
+    this.GetComponent<SpriteRenderer>().color = origincolor;
   }
   public void TransToPause()
   {
-    plantState = PlantState.Disable;
+    plantstate = PlantState.Disable;
     anim.enabled = false;
   }
 }

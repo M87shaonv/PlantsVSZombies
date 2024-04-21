@@ -9,10 +9,10 @@ public class CabbageBullet : MonoBehaviour
   private float flightTime = 2f; // 飞行时间（抛物线运动持续时间）
   Zombie lastZombie; // 最后一个僵尸
   private int row; // 行号
-  public void SetSpeed(float speed) => this.speed = speed;
-  public void SetAttack(int attack) => this.attack = attack;
   public Transform shadow;
 
+  public void SetSpeed(float speed) => this.speed = speed;
+  public void SetAttack(int attack) => this.attack = attack;
   //!有一些奇怪的bug,子弹有时会在原地旋转一会
   void OnEnable()
   {

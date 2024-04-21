@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum ZombieTypes
+public enum ZombieTypes : int
 {
   /// <summary>
   /// 普通僵尸
@@ -39,6 +39,58 @@ public enum ZombieTypes
   /// 小丑僵尸
   /// </summary>
   JokerZombie,
+  /// <summary>
+  /// 气球僵尸
+  /// </summary>
+  BalloonZombie,
+  /// <summary>
+  /// 报纸僵尸
+  /// </summary>
+  NewsPaperZombie,
+  /// <summary>
+  /// 体育生僵尸
+  /// </summary>
+  SportsZombies,
+  /// <summary>
+  /// 矿工僵尸
+  /// </summary>
+  MinerZombie,
+  /// <summary>
+  /// 小鬼僵尸
+  /// </summary>
+  LitterGhostZombie,
+  /// <summary>
+  /// 冰车僵尸
+  /// </summary>
+  IceZombie,
+  /// <summary>
+  /// 巨型僵尸
+  /// </summary>
+  GiantZombie,
+  /// <summary>
+  /// 巨型绿僵尸
+  /// </summary>
+  GiantGreenZombie,
+  /// <summary>
+  /// 绿小鬼僵尸
+  /// </summary>
+  LitterGhostGreenZombie,
+  /// <summary>
+  /// 舞王僵尸
+  /// </summary>
+  DancerZombie,
+  /// <summary>
+  /// 追随舞王者僵尸
+  /// </summary>
+  BackupDancerZombie,
+  /// <summary>
+  /// 迪斯科僵尸
+  /// </summary>
+  DiscoZombie,
+  /// <summary>
+  /// 追随迪斯科者僵尸
+  /// </summary>
+  FollowerZombie,
 }
 public class ZombieManger : MonoBehaviour
 {
@@ -138,8 +190,11 @@ public class ZombieManger : MonoBehaviour
     zombie.transform.position = spawnPointList[index].position;
     //GameObject zombie = Instantiate(zombieperfab, spawnPointList[index].position, Quaternion.identity);
     zombies.Add(zombie.GetComponent<Zombie>());//得到僵尸身上的脚本将其添加到列表中
+    if (levelItem.zombieType == 15 || levelItem.zombieType == 16)//:防止巨型僵尸在最上面出现
+    {
+      index = Random.Range(0, spawnPointList.Length - 1);
+    }
     zombie.Row = index;//@设置行数
-
     // : 不同生成点的order不同,以此保证僵尸重叠时不会闪烁 
     zombie.GetComponent<SpriteRenderer>().sortingOrder = spawnPointList[index].GetComponent<SpriteRenderer>().sortingOrder + order;
     order++;//排序order

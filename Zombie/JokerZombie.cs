@@ -1,10 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
 public class JokerZombie : Zombie
 {
-
+  public float radius;
   protected override void OnEnable()
   {
     base.OnEnable();
@@ -33,12 +32,14 @@ public class JokerZombie : Zombie
   float BlastTimer = 0;
   void Update()
   {
-    if (ZombieEvent.Instance.plantRows[Row].Count <= 1) return;
+    Debug.Log(BlastTimer);
+    if (ZombieEvent.Instance.plantRows[Row].Count == 1) return;
     BlastTimer += Time.deltaTime;
     if (BlastTimer >= BlastTime)
     {
       Vector3 pos = ZombieEvent.Instance.plantRows[Row][1].transform.position;
-      if (pos.x - transform.position.x > -1f && pos.x - transform.position.x < 1f)//在一格左范围内
+      //没有吃植物,且在一格左范围内
+      if (zombieState != ZombieState.Eat && pos.x - transform.position.x > -1f && pos.x - transform.position.x < 1f)
       {
         anim.SetFloat("HPpercent", -1);
         anim.SetFloat("Die", 1);
@@ -57,14 +58,34 @@ public class JokerZombie : Zombie
   {
     yield return new WaitForSeconds(delay);
     StopAllCoroutines();
-    GameObject effect = GameObject.Instantiate(BulletHitManger.Instance.BlastEffect, transform.position, Quaternion.identity);
-    Destroy(effect, 0.5f);
+    //GameObject effect = GameObject.Instantiate(BulletHitManger.Instance.BlastEffect, transform.position, Quaternion.identity);
+    GameObject effect = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.BlastEffect);
+    effect.transform.position = transform.position;
+    BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.BlastEffect, effect, 0.5f);
+    //Destroy(effect, 0.5f);
     StartCoroutine(GameManger.Instance.WaitForSeconds(PlantDie, 0.2f));
   }
   void PlantDie()
   {
     BufferPoolManager.Instance.PushObj(ZombieManger.Instance.zombieTypeList[zombieType], this.gameObject);
-    Plant plant = ZombieEvent.Instance.plantRows[Row][1].GetComponent<Plant>();
-    plant.Die();
+    Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, radius);
+    foreach (Collider2D collider in colliders)
+    {
+      if (collider.CompareTag("Plant"))
+      {
+        Plant plant = collider.GetComponent<Plant>();
+        if (plant != null)
+        {
+          plant.Die();
+        }
+      }
+    }
   }
+#if TEXTING//调试用
+  private void OnDrawGizmos()
+  {
+    Gizmos.color = Color.red;
+    Gizmos.DrawWireSphere(transform.position, radius);
+  }
+#endif
 }

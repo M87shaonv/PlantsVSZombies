@@ -70,7 +70,6 @@ public class BufferPoolManager
         // 则创建，并且父节点是poolObj
         new GameObject(prefab.name).transform.SetParent(poolObj.transform);
       }
-
       // 隐藏
       obj.SetActive(false);
       // 设置父物体为根目录下的该预制体

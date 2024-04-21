@@ -21,7 +21,6 @@ public class SnowmanZombie : Zombie
     StartCoroutine(ChangeColor());
     if (currentHP <= 0)
     {
-      currentHP = -1;
       Dead();
     }
 

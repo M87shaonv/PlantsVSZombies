@@ -27,7 +27,7 @@ public class Carambola : PeaShooter
   {
     for (int i = 0; i <= 3; i++)
     {
-      CabbageBullet bullet = BufferPoolManager.Instance.GetObj(BulletManger.Instance.CarambolaBullet).GetComponent<CabbageBullet>();
+      CarambolaBullet bullet = BufferPoolManager.Instance.GetObj(BulletManger.Instance.CarambolaBullet).GetComponent<CarambolaBullet>();
       bullet.GetComponent<CarambolaBullet>().direction = i;
       bullet.transform.position = FirePoints[i].position;
       bullet.SetSpeed(bulletSpeed);
@@ -66,16 +66,18 @@ public class Carambola : PeaShooter
 
   void PrintCollisionTag(RaycastHit2D[] hits)
   {
-    foreach (var hit in hits)
-    {
-      if (hit.collider != null && hit.collider.CompareTag("Zombie"))
-      {
-        anim.SetBool("isShoot", true);
-        StartCoroutine(WaitSecondsShoot(OffestShoot, Shoot));
-        StartCoroutine(ChangeShootAnimation(OffestAnim, anim));
-        break;
-      }
-    }
+    if (this.plantstate == PlantState.Enable)//!如果没有该条件,会在生成时就调用该函数,导致报null引用错
+      if (hits != null)
+        foreach (var hit in hits)
+        {
+          if (hit.collider != null && hit.collider.CompareTag("Zombie"))
+          {
+            anim.SetBool("isShoot", true);
+            StartCoroutine(WaitSecondsShoot(OffestShoot, Shoot));
+            StartCoroutine(ChangeShootAnimation(OffestAnim, anim));
+            break;
+          }
+        }
   }
 }
 

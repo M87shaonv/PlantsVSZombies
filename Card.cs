@@ -76,6 +76,14 @@ public enum PlantType
   /// 魔法猫咪
   /// </summary>
   MagicCat,
+  /// <summary>
+  /// 樱桃炸弹
+  /// </summary>
+  CherryBomb,
+  /// <summary>
+  /// 玉米加农炮
+  /// </summary>
+  CornCannon,
 }
 #endregion
 public class Card : MonoBehaviour, IPointerClickHandler

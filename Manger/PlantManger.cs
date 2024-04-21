@@ -17,7 +17,8 @@ public enum PlantTypes
   OldWallLamp,//9
   Carambola,//10
   MagicCat,//11
-
+  CerryBomb,//12
+  CornCannon,//13
 }
 public class PlantManger : MonoBehaviour
 {

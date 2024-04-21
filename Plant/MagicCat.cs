@@ -10,6 +10,15 @@ public class MagicCat : PeaShooter
 
   protected override void EnableUpdate()
   {
+    if (ZombieEvent.Instance.SkyZombies.Count != 0)
+    {
+      shootTimer += Time.deltaTime;
+      if (shootTimer >= firingInterval)
+      {
+        DetectionEnemy();
+        shootTimer = 0;
+      }
+    }
     if (ZombieManger.Instance.zombies.Count == 0) return;//场上无僵尸
     shootTimer += Time.deltaTime;
     if (shootTimer >= firingInterval)

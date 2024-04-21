@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -12,11 +10,14 @@ public class OldWallLamp : Plant
   public float minIntensity = 0.8f;//最小亮度
   public float maxIntensity = 1.2f;//最大亮度
   public float breathDuration = 2.5f;//呼吸周期
+  float AddBloodTime = 5; // 加血时间
+  public float AddBloodTimer = 0; // 加血计时器
 
   protected override void OnEnable()//TODO 未测试加血特效
   {
     base.OnEnable();
     AlterHP = HP;
+    AddBloodTimer = 0;
   }
   void Awake()
   {
@@ -61,9 +62,13 @@ public class OldWallLamp : Plant
   protected override void EnableUpdate()
   {
     Breathe();
-    StartCoroutine(CheckNearbyPlant());//开启检测周围植物协程
+    AddBloodTimer += Time.deltaTime;
+    if (AddBloodTimer >= AddBloodTime)
+    {
+      CheckNearbyPlant();
+      AddBloodTimer = 0;
+    }
   }
-
   public override void Die()
   {
     base.Die();
@@ -71,33 +76,29 @@ public class OldWallLamp : Plant
     BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantTypes.OldWallLamp], this.gameObject);
 
   }
-  IEnumerator CheckNearbyPlant()//检测周围植物,每隔5秒检测一次并加血
+  void CheckNearbyPlant()//检测周围植物
   {
-    while (AlterHP > 0)
+    Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0f);// 执行长方形范围检测
+    foreach (Collider2D collider in colliders)// 遍历检测到的植物
     {
-      Collider2D[] colliders = Physics2D.OverlapBoxAll(transform.position, boxSize, 0f);// 执行长方形范围检测
-      foreach (Collider2D collider in colliders)// 遍历检测到的植物
-
+      if (collider.CompareTag("Plant") && collider.GetComponent<Plant>().plantType != this.plantType) // 确保检测到的不是自己
       {
-        if (collider.CompareTag("Plant") && collider.GetComponent<Plant>().plantType != this.plantType) // 确保检测到的不是自己
+        Plant nearbyPlant = collider.GetComponent<Plant>();
+        if (nearbyPlant != null)
         {
-          Plant nearbyPlant = collider.GetComponent<Plant>();
-          if (nearbyPlant != null)
-          {
-            collider.GetComponent<Plant>().AddBlood(20);
-            // 在这里处理检测到的周围植物
-            // 比如加血或执行其他操作
-          }
+          collider.GetComponent<Plant>().AddBlood(20);
         }
       }
-      yield return new WaitForSeconds(5f);
     }
   }
-  // private void OnDrawGizmos()
-  // {
-  //   Gizmos.color = Color.red;
-  //   Gizmos.DrawWireCube(transform.position, boxSize);
-  // }
+#if TEXTING
+  private void OnDrawGizmos()
+  {
+    Gizmos.color = Color.red;
+    Gizmos.DrawWireCube(transform.position, boxSize);
+  }
+#endif
+
   //! 协程虽好,但这里的呼吸效果跟随生命值变化导致debug打印值和编辑器内值不一致,Update就可以
   // IEnumerator Breathe()//使用光照强度的改变表示呼吸
   // {
