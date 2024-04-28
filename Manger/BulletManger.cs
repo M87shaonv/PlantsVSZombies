@@ -17,4 +17,7 @@ public class BulletManger : MonoBehaviour
   public GameObject CarambolaBullet;
   public GameObject MagicCatBullet;
   public GameObject CornCannonBullet;//玉米炮弹
+  public GameObject TimidMushroomBullet;
+  public GameObject WatermelonBullet;
+  public GameObject WinterWatermelonBullet;
 }

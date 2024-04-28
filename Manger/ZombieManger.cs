@@ -102,7 +102,6 @@ public class ZombieManger : MonoBehaviour
   }
 
   public Transform[] spawnPointList;//生成点数组
-  public GameObject zombiePrefab;//僵尸预制体
   public List<Zombie> zombies = new List<Zombie>();//僵尸列表
   //private List<GameObject> zombieList = new List<GameObject>();//当前波次的所有僵尸
   int zombieCount = 0;//僵尸数量
@@ -189,7 +188,7 @@ public class ZombieManger : MonoBehaviour
     int index = Random.Range(0, spawnPointList.Length);
     zombie.transform.position = spawnPointList[index].position;
     //GameObject zombie = Instantiate(zombieperfab, spawnPointList[index].position, Quaternion.identity);
-    zombies.Add(zombie.GetComponent<Zombie>());//得到僵尸身上的脚本将其添加到列表中
+    zombies.Add(zombie.GetComponent<Zombie>());//:得到僵尸身上的脚本将其添加到列表中
     if (levelItem.zombieType == 15 || levelItem.zombieType == 16)//:防止巨型僵尸在最上面出现
     {
       index = Random.Range(0, spawnPointList.Length - 1);

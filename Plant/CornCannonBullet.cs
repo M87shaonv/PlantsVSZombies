@@ -31,6 +31,9 @@ public class CornCannonBullet : MonoBehaviour
     GameObject effect = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.CornCannonBulletHit);
     effect.transform.position = transform.position;
     BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.CornCannonBulletHit, effect, 0.95f);
+    GameObject blastmark = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.CornCannonBulletBlastMark);
+    blastmark.transform.position = transform.position;
+    BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.CornCannonBulletBlastMark, blastmark, 5f);
     Collider2D[] colliders = Physics2D.OverlapCircleAll(center, radius);
 
     foreach (Collider2D collider in colliders)

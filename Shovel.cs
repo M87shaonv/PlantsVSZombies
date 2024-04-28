@@ -16,24 +16,28 @@ public class Shovel : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler,
   {
     isUseShovel = true;
     Vector2 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero, Mathf.Infinity, plantLayer);
-    if (hit.collider != null && hit.collider.CompareTag("Plant"))
+    //RaycastHit2D hit = Physics2D.Raycast(clickPosition, Vector2.zero, Mathf.Infinity, plantLayer);
+    Collider2D[] colliders = Physics2D.OverlapPointAll(clickPosition, plantLayer);
+    foreach (Collider2D collider in colliders)
     {
-      Plant plant = hit.collider.GetComponent<Plant>(); // 假设植物的脚本为Plant
-      if (plant != null)
+      if (collider != null && collider.CompareTag("Plant"))
       {
-        // 进行相关铲除植物的逻辑
-        plant.Die();
+        Plant plant = collider.GetComponent<Plant>(); // 假设植物的脚本为Plant
+        if (plant != null)
+        {
+          plant.Die();
+        }
+      }
+      if (collider != null && collider.CompareTag("FloorPlant"))
+      {
+        Plant plant = collider.GetComponent<Plant>();
+        if (plant != null)
+        {
+          plant.Die();
+        }
       }
     }
-    if (hit.collider != null && hit.collider.CompareTag("Squash"))
-    {
-      Plant plant = hit.collider.GetComponent<Plant>();
-      if (plant != null)
-      {
-        plant.Die();
-      }
-    }
+
   }
 
   public void OnPointerEnter(PointerEventData eventData)//鼠标进入事件

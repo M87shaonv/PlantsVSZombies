@@ -119,6 +119,7 @@ public class Plant : MonoBehaviour
     //@ 在死亡时将该植物从该行移除
     ZombieEvent.Instance.OnPlantExited(row, this);
     thisCell.RemovePlant();
+    AlterHP = HP;//死亡时恢复生命值
   }
   bool isColorChanging = false; // 添加一个标志
   IEnumerator ColorChange()//受击高亮后的颜色恢复

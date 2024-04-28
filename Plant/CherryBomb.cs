@@ -17,6 +17,7 @@ public class CherryBomb : Plant
     base.OnEnable();
     ClickCount = 0;
     BaackBombTimer = 0;
+    this.GetComponent<SpriteRenderer>().sprite = images[0];
   }
   protected override void EnableUpdate()
   {
@@ -96,7 +97,7 @@ public class CherryBomb : Plant
   }
 
 #if TEXTING
-  private void OnDrawGizmos()
+  void OnDrawGizmos()
   {
     Gizmos.color = Color.red;
     Gizmos.DrawWireSphere(transform.position, radius);

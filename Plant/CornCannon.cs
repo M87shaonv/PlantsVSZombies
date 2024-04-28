@@ -12,17 +12,18 @@ enum CannonState
 // :所有标志位改为false, 进入NoBulletIdle状态
 public class CornCannon : Plant
 {
-  float LoadTIme = 20;//装载时间
+  float LoadTIme = 30;//装载时间
   public float LoadTimer = 0;
   CannonState state = CannonState.NoBulletIdle;
   bool Tip = false;
+
   /// <summary>
   /// 炮弹击中点提示
   /// </summary>
   GameObject ShellLanding;
   protected override void OnEnable()
   {
-#if TEXTING
+#if TEXTING//:测试环境下为2秒装载时间
     LoadTIme = 2;
 #endif
     base.OnEnable();
@@ -120,7 +121,11 @@ public class CornCannon : Plant
     anim.SetBool("isLdle", true);
     state = CannonState.Idle;
   }
-
+  public override void Die()
+  {
+    base.Die();
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantTypes.CornCannon], this.gameObject);
+  }
   //Idle状态下点击发射炮弹
   void Shoot()
   {

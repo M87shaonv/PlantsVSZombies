@@ -18,6 +18,7 @@ public class UIManger : MonoBehaviour
   public GameObject SuccessMenu;//成功菜单
   public GameObject FailMenu;//失败菜单
   public SelectCardBarUI selectCardBarUI;//选择卡牌栏UI
+  public GameObject GoldBar;//金币栏
 
   private void Awake()
   {
@@ -45,6 +46,7 @@ public class UIManger : MonoBehaviour
     SunManger.Insance.StartProduceSun();//开始生产阳光
     ZombieManger.Instance.TableCreateZombie();//开始创建僵尸
     BgMusicManger.Instance.StartMusic(Config.BgminGameQucik);//播放游戏中背景音乐
+    GoldBar.SetActive(true);
   }
   public void ShowBigWaveUI()
   {

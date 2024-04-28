@@ -1,5 +1,4 @@
 using System.Collections;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 /// <summary>
 /// 子弹特效和其他特效管理器
@@ -21,6 +20,10 @@ public class BulletHitManger : MonoBehaviour
   public GameObject CarambolaBulletHit;//杨桃子弹
   public GameObject CornCannonBulletHit;//玉米炮弹
   public GameObject ShellLandingTip;//炮弹击中点提示
+  public GameObject CornCannonBulletBlastMark;
+  public GameObject JalapenoBlast;//火爆辣椒爆炸特效
+  public GameObject PotatoMineBlast;//土豆雷爆炸特效
+  public GameObject TimidMushroomBulletHit;
   #region Blood effects for plants and zombies
   public GameObject BloodEffect;//植物加血特效
   public GameObject ZombieBloodEffect; //僵尸加血特效

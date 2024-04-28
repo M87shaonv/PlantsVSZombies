@@ -11,7 +11,8 @@ public class FirePeaBullet : PeaBullet
     if (other.CompareTag("Zombie"))
     {
       AudioManger.Instance.PlayClip(Config.peaShoot);
-      //Destroy(this.gameObject);
+      isDownward = false;
+      isUpward = false;
       BufferPoolManager.Instance.PushObj(BulletManger.Instance.FirePeaBullet, this.gameObject);
       StopAllCoroutines();//停止所有协程
       CancelInvoke();

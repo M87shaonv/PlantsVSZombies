@@ -19,6 +19,19 @@ public enum PlantTypes
   MagicCat,//11
   CerryBomb,//12
   CornCannon,//13
+  Jajapeno,//14
+  LuckyFlower,//15
+  PotatoMine,//16
+  Spikeweed,//17
+  SplitPeaShooter,//18
+  SunflowerTwin,//19
+  TallWallNut,//20
+  ThreeShotPeashooter,//21
+  TimidMushroom,//22
+  WatermelonPitcher,//23
+  WinterWatermelonPitcher,//24
+  FrozenMushroom,//25
+  Imitater,//26
 }
 public class PlantManger : MonoBehaviour
 {

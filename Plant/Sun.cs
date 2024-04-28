@@ -10,7 +10,6 @@ public class Sun : MonoBehaviour
   void OnEnable()//每次启用时调用
   {
     StartCoroutine(GameManger.Instance.WaitForSeconds(autoCollect, 4));
-
   }
 
   public void autoCollect()

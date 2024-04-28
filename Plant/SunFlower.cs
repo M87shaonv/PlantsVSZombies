@@ -26,10 +26,9 @@ public class SunFlower : Plant
   /// <summary>
   /// 生产阳光
   /// </summary>
-  public void ProduceSun()
+  public virtual void ProduceSun()
   {
     Sun sun = BufferPoolManager.Instance.GetObj(sunPerfab).GetComponent<Sun>();//从对象池中获取对象
-    //GameObject sun = GameObject.Instantiate(sunPerfab, transform.position, Quaternion.identity);
     sun.transform.position = this.transform.position;//太阳花自身位置
     //阳光的随机跳跃
     float ditance = Random.Range(jumpMinDistance, jumpMaxDistance);
@@ -43,7 +42,6 @@ public class SunFlower : Plant
   {
     base.Die();
     produceTimer = 0;
-    AlterHP = HP;//死亡时恢复生命值
     BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantType.Sunflower], this.gameObject);
   }
 }

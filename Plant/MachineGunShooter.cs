@@ -56,6 +56,6 @@ public class MachineGunShooter : PeaShooter
   {
     base.Die();
     StopAllCoroutines();
-    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[7], this.gameObject);
+    BufferPoolManager.Instance.PushObj(PlantManger.Instance.plantType[(int)PlantTypes.MachineGunPeaShooter], this.gameObject);
   }
 }

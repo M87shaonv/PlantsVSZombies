@@ -8,18 +8,15 @@ public class LitterGhostZombie : Zombie
   protected override void OnEnable()
   {
     base.OnEnable();
-    float random = Random.Range(5f, 8f);
+    float random = Random.Range(5f, 6f);
     MoveOnParabola(transform.position, new Vector3(transform.position.x - random, transform.position.y, transform.position.z), 3, 2);
     StartCoroutine(AnimTOWalk());
   }
-  protected override void FixedUpdate()
-  {
-    base.FixedUpdate();
-  }
+
   /// <summary>
   /// 抛出后,转为Walk状态
   /// </summary>
-  IEnumerator AnimTOWalk()
+  protected IEnumerator AnimTOWalk()
   {
     yield return new WaitForSeconds(2);
     anim.Play("Walk");
@@ -27,7 +24,7 @@ public class LitterGhostZombie : Zombie
   /// <summary>
   /// 抛物线运动
   /// </summary>
-  void MoveOnParabola(Vector3 start, Vector3 end, float height, float duration)
+  protected void MoveOnParabola(Vector3 start, Vector3 end, float height, float duration)
   {
     Sequence sequence = DOTween.Sequence();
     sequence.Append(transform.DOJump(end, height, 1, duration).SetEase(Ease.Linear));

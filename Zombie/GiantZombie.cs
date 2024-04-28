@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 //:进入为Walk状态,一定概率直接丢出小鬼僵尸
 //:10秒内生命值小于600丢出小鬼僵尸
@@ -35,12 +36,32 @@ public class GiantZombie : Zombie
 
     rigid.MovePosition(rigid.position + Vector2.left * AlterMoveSpeed * Time.deltaTime);
   }
+  void OnTriggerEnter2D(Collider2D other)
+  {
+    if (other.CompareTag("Plant"))
+    {
+      anim.SetBool("isEating", true);
+      zombieState = ZombieState.Eat;
+      currentPlant = other.GetComponent<Plant>();//获取触碰到的植物对象的Palnt脚本
+    }
+    else if (other.CompareTag("FloorPlant"))//可以攻击地刺
+    {
+      anim.SetBool("isEating", true);
+      zombieState = ZombieState.Eat;
+      currentPlant = other.GetComponent<Plant>();//获取触碰到的植物对象的Palnt脚本
+    }
+    else if (other.CompareTag("Door"))
+    {
+      transform.DOMoveY(-0.5f, 2);//移动到门口
+      GameManger.Instance.GameOverFail();//摄像机移动
+    }
+  }
   protected override void FixedUpdate()
   {
     if (ThrowTime <= 10 && !isThrow)
     {
       ThrowTimer += Time.deltaTime;
-      if (currentHP < 600 && currentHP > 0)
+      if (currentHP < 500 && currentHP > 0)
       {
         anim.Play("Throw");
         isThrow = true;
@@ -60,12 +81,22 @@ public class GiantZombie : Zombie
         break;
     }
   }
+  protected override void EatUpdate()
+  {
 
+    attackTimer += Time.deltaTime;
+    if (attackTimer >= attackInterval && currentPlant != null)
+    {
+      currentPlant.TakeDamage(attack);
+      attackTimer = 0;
+    }
+  }
   #region 在帧事件中调用，用于处理动画事件
   void ThrowZombie()
   {
     GameObject LitterGhostZombie = BufferPoolManager.Instance.GetObj(ZombieManger.Instance.zombieTypeList[(int)ZombieTypes.LitterGhostZombie]);
     LitterGhostZombie.transform.position = ThrowPoint.position;
+    LitterGhostZombie.GetComponent<Zombie>().Row = ++this.Row;
     isThrow = true;
   }
   void PlayNoLitterGhostWalk()

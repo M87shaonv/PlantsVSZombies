@@ -84,6 +84,58 @@ public enum PlantType
   /// 玉米加农炮
   /// </summary>
   CornCannon,
+  /// <summary>
+  /// 火爆辣椒
+  /// </summary>
+  Jajapeno,
+  /// <summary>
+  /// 幸运花
+  /// </summary>
+  LuckyFlower,
+  /// <summary>
+  /// 土豆地雷
+  /// </summary>
+  PotatoMine,
+  /// <summary>
+  /// 地刺
+  /// </summary>
+  Spikeweed,
+  /// <summary>
+  /// 裂荚豌豆射手
+  /// </summary>
+  SplitPeaShooter,
+  /// <summary>
+  /// 孪生向日葵
+  /// </summary>
+  SunflowerTwin,
+  /// <summary>
+  /// 高坚果
+  /// </summary>
+  TallWallNut,
+  /// <summary>
+  /// 三发豌豆射手
+  /// </summary>
+  ThreeShotPeashooter,
+  /// <summary>
+  /// 胆小菇
+  /// </summary>
+  TimidMushroom,
+  /// <summary>
+  /// 西瓜投手
+  /// </summary>
+  WatermelonPitcher,
+  /// <summary>
+  /// 冰西瓜投手
+  /// </summary>
+  WinterWatermelonPitcher,
+  /// <summary>
+  /// 冰冻蘑菇
+  /// </summary>
+  FrozenMushroom,
+  /// <summary>
+  /// 模仿者
+  /// </summary>
+  Imitater,
 }
 #endregion
 public class Card : MonoBehaviour, IPointerClickHandler

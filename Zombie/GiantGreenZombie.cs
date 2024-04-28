@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 //:20秒内未死亡,将丢出10个小鬼僵尸
 public class GiantGreenZombie : Zombie
@@ -12,6 +13,26 @@ public class GiantGreenZombie : Zombie
     base.OnEnable();
     ThrowTimer = 0;
     order = 1;
+  }
+  void OnTriggerEnter2D(Collider2D other)
+  {
+    if (other.CompareTag("Plant"))
+    {
+      anim.SetBool("isEating", true);
+      zombieState = ZombieState.Eat;
+      currentPlant = other.GetComponent<Plant>();//获取触碰到的植物对象的Palnt脚本
+    }
+    else if (other.CompareTag("FloorPlant"))//可以攻击地刺
+    {
+      anim.SetBool("isEating", true);
+      zombieState = ZombieState.Eat;
+      currentPlant = other.GetComponent<Plant>();//获取触碰到的植物对象的Palnt脚本
+    }
+    else if (other.CompareTag("Door"))
+    {
+      transform.DOMoveY(-0.5f, 2);//移动到门口
+      GameManger.Instance.GameOverFail();//摄像机移动
+    }
   }
   protected override void MoveUpdate()
   {
@@ -62,6 +83,7 @@ public class GiantGreenZombie : Zombie
   {
     GameObject LitterGhostZombie = BufferPoolManager.Instance.GetObj(ZombieManger.Instance.zombieTypeList[(int)ZombieTypes.LitterGhostGreenZombie]);
     LitterGhostZombie.transform.position = ThrowPoint.position;
+    LitterGhostZombie.GetComponent<Zombie>().Row = this.Row;
     LitterGhostZombie.GetComponent<LitterGhostGreenZombie>().spriteRenderer.sortingOrder += order;
     ++order;
   }
@@ -74,7 +96,16 @@ public class GiantGreenZombie : Zombie
     }
   }
   #endregion
+  protected override void EatUpdate()
+  {
 
+    attackTimer += Time.deltaTime;
+    if (attackTimer >= attackInterval && currentPlant != null)
+    {
+      currentPlant.TakeDamage(attack);
+      attackTimer = 0;
+    }
+  }
   public override void TakeDamage(int damage)
   {
     if (currentHP <= 0) return;

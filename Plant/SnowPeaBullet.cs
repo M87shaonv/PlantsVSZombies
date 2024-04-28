@@ -13,8 +13,9 @@ public class SnowPeaBullet : PeaBullet
     {
       if (other.GetComponent<IronGateZombie>() != null)//铁门僵尸可以防御冰子弹
       {
-        //AudioManger.Instance.PlayClip(Config.peaShoot);
-        //Destroy(this.gameObject);
+        isDownward = false;
+        isUpward = false;
+        isfire = false;
         BufferPoolManager.Instance.PushObj(BulletManger.Instance.SnowPeaBullet, this.gameObject);
         return;
       }
@@ -25,15 +26,15 @@ public class SnowPeaBullet : PeaBullet
       Vector3 offest = new Vector3(-0.8f, 0.8f, 0);
       Vector3 newPos = transform.position - offest;
       other.GetComponent<Zombie>().TakeDamage(attack);
-      GameObject effect = GameObject.Instantiate(BulletHitManger.Instance.SnowPeaBulletHit, newPos, Quaternion.identity);//实例化特效
-      Destroy(effect, 0.5f);//销毁特效
-      other.GetComponent<Zombie>().spriteRenderer.color = new Color32(60, 255, 255, 255);
-      if (other.GetComponent<Zombie>().AlterMoveSpeed > 1)
+      //GameObject effect = GameObject.Instantiate(BulletHitManger.Instance.SnowPeaBulletHit, newPos, Quaternion.identity);//实例化特效
+      //Destroy(effect, 0.5f);//销毁特效
+      GameObject effect = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.SnowPeaBulletHit);
+      effect.transform.position = newPos;
+      BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.SnowPeaBulletHit, this.gameObject, 0.5f);
+      other.GetComponent<SpriteRenderer>().color = new Color32(60, 220, 220, 255);
+      if (other.GetComponent<Zombie>().AlterMoveSpeed > 0.1f)
       {
-        if (other.GetComponent<Zombie>().AlterMoveSpeed <= 1)
-          return;
-
-        other.GetComponent<Zombie>().AlterMoveSpeed /= 2;
+        other.GetComponent<Zombie>().AlterMoveSpeed -= 0.05f;
       }
     }
   }

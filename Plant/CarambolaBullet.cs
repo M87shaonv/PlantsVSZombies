@@ -33,14 +33,13 @@ public class CarambolaBullet : PeaBullet
     if (other.CompareTag("Zombie"))
     {
       AudioManger.Instance.PlayClip(Config.peaShoot);
-
       BufferPoolManager.Instance.PushObj(BulletManger.Instance.CarambolaBullet, this.gameObject);
       StopAllCoroutines();//停止所有协程
-      CancelInvoke();
 
       other.GetComponent<Zombie>().TakeDamage(attack);
-      GameObject effect = Instantiate(BulletHitManger.Instance.CarambolaBulletHit, transform.position, Quaternion.identity);//实例化特效
-      Destroy(effect, 0.5f);//销毁特效
+      GameObject effect = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.CarambolaBulletHit);
+      effect.transform.position = this.transform.position;
+      BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.CarambolaBulletHit, this.gameObject, 0.5f);
     }
   }
 }

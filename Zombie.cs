@@ -47,6 +47,7 @@ public class Zombie : MonoBehaviour
     havehead = true;
     AlterMoveSpeed = moveSpeed;
     spriteRenderer.sortingOrder++;
+    Frozen = false;
   }
   protected void Awake()
   {
@@ -140,6 +141,27 @@ public class Zombie : MonoBehaviour
     anim.enabled = false;
     rigid.bodyType = RigidbodyType2D.Static;//刚体将不会受到物理效果
   }
+  public void FrozenZombie()
+  {
+    anim.enabled = false;
+    AlterMoveSpeed = 0;
+    GameObject effect = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.SnowPeaBulletHit);
+    Vector3 offest = new Vector3(-0.8f, 0.8f, 0);
+    Vector3 newPos = transform.position - offest;
+
+    effect.transform.position = newPos;
+    BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.SnowPeaBulletHit, effect, 5f);
+    spriteRenderer.color = new Color32(0, 220, 220, 255);
+    Frozen = true;
+  }
+  public void FrozenedZombie()
+  {
+    anim.enabled = true;
+    AlterMoveSpeed = moveSpeed;
+    Frozen = false;
+    StartCoroutine(ChangeColor());
+  }
+  public bool Frozen = false;//冰冻状态不改变颜色
   /// <summary>
   /// 僵尸受到伤害
   /// </summary>
@@ -147,11 +169,14 @@ public class Zombie : MonoBehaviour
   {
     if (currentHP <= 0) return;
     this.currentHP -= damage;
-    if (damage != 15)
-    {
-      GetComponent<SpriteRenderer>().color = Color.white;
-      StartCoroutine(ChangeColor());
-    }
+
+    if (!Frozen)
+      if (damage != 15)
+      {
+        GetComponent<SpriteRenderer>().color = Color.white;
+        StartCoroutine(ChangeColor());
+      }
+
     if (currentHP <= 0)
     {
       currentHP = -1;
