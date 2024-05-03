@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +20,7 @@ public class UIManger : MonoBehaviour
   public GameObject FailMenu;//失败菜单
   public SelectCardBarUI selectCardBarUI;//选择卡牌栏UI
   public GameObject GoldBar;//金币栏
-
+  public GameObject Introduce;//卡牌介绍界面
   private void Awake()
   {
     Instance = this;//? Instance这个单例模式究竟怎么实现的
@@ -48,6 +49,8 @@ public class UIManger : MonoBehaviour
     BgMusicManger.Instance.StartMusic(Config.BgminGameQucik);//播放游戏中背景音乐
     GoldBar.SetActive(true);
   }
+  #region 大波僵尸\最后一波僵尸\成功\失败UI的显示与隐藏
+
   public void ShowBigWaveUI()
   {
     AudioManger.Instance.PlayClip(Config.bigwave, 0.2f);
@@ -88,6 +91,8 @@ public class UIManger : MonoBehaviour
   {
     FailMenu.SetActive(false);
   }
+  #endregion
+
   void InitializeChooseCardsList()
   {
     HandManger.Instance.cardInstances = cardListUI.ChooseCardsList;//初始化选择卡牌列表
@@ -95,5 +100,14 @@ public class UIManger : MonoBehaviour
     {
       cardListUI.ChooseCardsList[i].cardlight.GetComponent<Button>().enabled = true;
     }
+  }
+  public void ShowCardIntroduce(String Text)//显示卡牌介绍
+  {
+    Introduce.SetActive(true);
+    Introduce.transform.Find("text").GetComponent<Text>().text = Text;
+  }
+  public void HideCardIntroduce()//隐藏卡牌介绍
+  {
+    Introduce.SetActive(false);
   }
 }

@@ -11,7 +11,7 @@ public class SelectCardBarUI : MonoBehaviour
   public GameObject StartGameButton;
   public GameObject CardPrefab;
   int cardNum = 0;
-  void Start()
+  public void InitiCardBarUI()
   {
     cardNum = UIManger.Instance.cardListUI.cardList.Count;
     for (int i = 0; i < cardNum; i++)//根据已有卡牌数量生成
@@ -48,8 +48,8 @@ public class SelectCardBarUI : MonoBehaviour
   }
   public void Hide()
   {
-    GetComponent<RectTransform>().DOLocalMoveY(-1073, 1).OnComplete(UIManger.Instance.ShowPrepareUI);
-
+    GetComponent<RectTransform>().DOLocalMoveY(-1626, 1).OnComplete(UIManger.Instance.ShowPrepareUI);
+    UIManger.Instance.HideCardIntroduce();//隐藏卡牌介绍UI
   }
   public void HightLightCard(int index)//高亮卡牌
   {
@@ -62,7 +62,7 @@ public class SelectCardBarUI : MonoBehaviour
     card.GetComponent<Card>().cardmask.enabled = true;
   }
   public bool gameStart = false;
-  public void StartGame()
+  public void StartGame()//$开始游戏
   {
     gameStart = true;
 

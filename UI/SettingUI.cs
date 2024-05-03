@@ -35,7 +35,7 @@ public class SettingUI : MonoBehaviour
   }
   public void QuitGame()
   {
-    SceneManager.LoadScene(1);// 加载主菜单场景
+    SceneManager.LoadScene(0);// 加载主菜单场景
   }
   String[] texts = new string[]{
     "暂停?\n你打的什么坏主意",

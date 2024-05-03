@@ -25,7 +25,4 @@ public class GoldManger : MonoBehaviour
     position.x -= 1.4f;
     return position;
   }
-
-
-
 }

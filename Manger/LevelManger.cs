@@ -4,44 +4,50 @@ using UnityEngine;
 public class LevelManger : MonoBehaviour
 {
   public static LevelManger Instance;
+  LevelItem levelItem;
+  /// <summary>
+  /// 0脚本花,1土豆地雷,2坚果墙,3寒冰豌豆射手,4双发豌豆射手,5火炬树桩
+  /// </summary>
   public List<GameObject> cards;
+  public GameObject[] zombieShows;
   private void Awake()
   {
     Instance = this;
+    currentLevel = PlayerPrefs.GetInt("Level");
+    levelItem = ZombieManger.Instance.levelData.levelDataList[currentLevel];
   }
   public int currentLevel;
-  void Update()
+  void Start()
   {
     LevelEVent();
   }
 
   public void LevelEVent()
   {
-    if (currentLevel == 2)
+    //显示当前关卡的僵尸
+    for (int current = 0; current < ZombieManger.Instance.levelData.levelDataList.Count; current++)//当前关卡当前波次的所有levelItem数据
     {
-      cards[2].SetActive(true);//双发射手卡牌
+      LevelItem levelItem = ZombieManger.Instance.levelData.levelDataList[current];
+      if (levelItem.LevelID == currentLevel)
+      {
+        zombieShows[levelItem.zombieType].SetActive(true);
+      }
+      if (levelItem.LevelID < currentLevel)
+      {
+        break;
+      }
     }
-    if (currentLevel == 3)
-    {
-      cards[3].SetActive(true);//坚果卡牌
-    }
-    if (currentLevel == 4)
-    {
-      cards[4].SetActive(true);//火焰木桩卡牌
-    }
-    if (currentLevel == 5)
-    {
-
-      cards[5].SetActive(true);//窝瓜卡牌
-    }
-
-    if (currentLevel == 6)
-    {
-      cards[6].SetActive(true);//寒冰射手卡牌
-    }
-    if (currentLevel == 7)
-    {
-      cards[7].SetActive(true);//机枪豌豆卡牌
-    }
+    if (levelItem.LevelID == 2)
+      PlayerPrefs.SetString("OwnedCard", cards[0].name);
+    else if (levelItem.LevelID == 3)
+      PlayerPrefs.SetString("OwnedCard", cards[1].name);
+    else if (levelItem.LevelID == 4)
+      PlayerPrefs.SetString("OwnedCard", cards[2].name);
+    else if (levelItem.LevelID == 5)
+      PlayerPrefs.SetString("OwnedCard", cards[3].name);
+    else if (levelItem.LevelID == 6)
+      PlayerPrefs.SetString("OwnedCard", cards[4].name);
+    else if (levelItem.LevelID == 7)
+      PlayerPrefs.SetString("OwnedCard", cards[5].name);
   }
 }

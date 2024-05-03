@@ -47,6 +47,18 @@ public class SnowmanZombie : Zombie
 
   public override void Dead()
   {
+    for (int i = 0; i < 10; i++)
+    {
+      Gold Gold = BufferPoolManager.Instance.GetObj(GoldManger.Instance.GoldPrefab).GetComponent<Gold>();
+      Gold.transform.position = this.transform.position;
+      float ditance = Random.Range(0.5f, 1.5f);
+      ditance = Random.Range(0, 2) < 1 ? -ditance : ditance;//0向左移动,1向右移动
+      Vector3 position = transform.position;
+      position.x += ditance;
+
+      Gold.GetComponent<Gold>().JumpTo(position);
+
+    }
     base.Dead();
     StartCoroutine(BufferPoolManager.Instance.WaitAndPush(ZombieManger.Instance.zombieTypeList[zombieType], this.gameObject, 6));
   }

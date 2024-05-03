@@ -13,7 +13,7 @@ public class Imitater : Plant
   {
     yield return new WaitForSeconds(2);
     anim.Play("Explore");
-    yield return new WaitForSeconds(3);
+    yield return new WaitForSeconds(2);
     Initial();
   }
   void Initial()
@@ -21,7 +21,11 @@ public class Imitater : Plant
     this.Die();
     int zombier = Random.Range(0, ZombieManger.Instance.zombieTypeList.Count + 1);
     GameObject newZombie = BufferPoolManager.Instance.GetObj(ZombieManger.Instance.zombieTypeList[zombier]);
-    newZombie.transform.position = transform.position;
+
+    Transform create = GameObject.Find("ZombiePointList").transform.GetChild(row);
+    newZombie.GetComponent<SpriteRenderer>().sortingOrder = create.GetComponent<SpriteRenderer>().sortingOrder + ZombieManger.Instance.order;
+    newZombie.transform.position = create.position;
+
     ZombieManger.Instance.zombies.Add(newZombie.GetComponent<Zombie>());
     ZombieEvent.Instance.OnZombieEntered(row, newZombie.GetComponent<Zombie>());
     for (int i = 0; i < 5; ++i)

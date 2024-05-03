@@ -5,7 +5,7 @@ public class OldWallLamp : Plant
 {
   public float length = 0;
   public float width = 0;
-  public Vector2 boxSize; //长方形检测范围的半尺寸
+  public Vector2 boxSize; //长方形检测范围的尺寸
   public Light2D light2d;
   public float minIntensity = 0.8f;//最小亮度
   public float maxIntensity = 1.2f;//最大亮度

@@ -99,37 +99,22 @@ public class ZombieManger : MonoBehaviour
   private void Awake()
   {
     Instance = this;
+    levelData = Resources.Load<LevelData>("Level");
   }
 
   public Transform[] spawnPointList;//生成点数组
   public List<Zombie> zombies = new List<Zombie>();//僵尸列表
-  //private List<GameObject> zombieList = new List<GameObject>();//当前波次的所有僵尸
-  int zombieCount = 0;//僵尸数量
   void Start()
   {
-    PlayerPrefs.SetInt("Level", 1);//初始化关卡数
-    //TODO:当前关卡数
+    //获取当前关卡数
     currentLevel = PlayerPrefs.GetInt("Level");
-    Readtable();
-  }
-
-  void Readtable()
-  {
-    StartCoroutine(LoadTable());
-  }
-
-  IEnumerator LoadTable()//异步读取表格
-  {
-    ResourceRequest request = Resources.LoadAsync("Level");
-    yield return request;
-    levelData = request.asset as LevelData;
   }
 
   public int currentWave = 1;//当前波数
   public LevelData levelData;//关卡数据
   public int currentLevel;//当前关卡数
   public float maxProgress = 0;//当前最大进度
-  private int order = 1;//用于排序,保证后生成的僵尸在前面显示
+  public int order = 1;//用于排序,保证后生成的僵尸在前面显示
 
   void Update()
   {
@@ -157,7 +142,6 @@ public class ZombieManger : MonoBehaviour
       if (maxProgress == 0)
       {
         maxProgress = levelItem.Maxprogress;
-        LevelManger.Instance.currentLevel = currentLevel;
       }
     }
     if (isEnd && zombies.Count == 0)//游戏胜利
@@ -180,7 +164,7 @@ public class ZombieManger : MonoBehaviour
   /// </summary>
   IEnumerator SpawnZombie(LevelItem levelItem)
   {
-    float currentTime = levelItem.createTime + Time.time;//BUG 这里时间不对,不是每一波的开始时间,而是游戏开始运行时的时间加
+    float currentTime = levelItem.createTime;
     yield return new WaitForSeconds(currentTime);//指定时间后生成
     //GameObject zombieperfab = Resources.Load("Perfabs/Zombie/Zombie" + levelItem.zombieType.ToString()) as GameObject;
     Zombie zombie = BufferPoolManager.Instance.GetObj(zombieTypeList[levelItem.zombieType]).GetComponent<Zombie>();//从缓存池中获取预制体
@@ -192,6 +176,7 @@ public class ZombieManger : MonoBehaviour
     if (levelItem.zombieType == 15 || levelItem.zombieType == 16)//:防止巨型僵尸在最上面出现
     {
       index = Random.Range(0, spawnPointList.Length - 1);
+      zombie.transform.position = new Vector3(spawnPointList[index].position.x, spawnPointList[index].position.y + 1, spawnPointList[index].position.z);
     }
     zombie.Row = index;//@设置行数
     // : 不同生成点的order不同,以此保证僵尸重叠时不会闪烁 

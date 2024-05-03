@@ -9,17 +9,16 @@ public class GameManger : MonoBehaviour
 {
   public static GameManger Instance { get; private set; }
   public static bool gameStarted = false;// 游戏是否开始
+  public GameObject CrazyDave;//戴夫
   private void Awake()
   {
     Instance = this;
   }
-  private void Start()
+  public void GameInit()
   {
-    //UIManger.Instance.progressUI.SetProgress(0.6f);
     GameStart();
     // 移动完成后暂停1秒返回
-    StartCoroutine(WaitForSeconds(ReturnToOrigin, 1));
-
+    StartCoroutine(WaitForSeconds(ReturnToOrigin, 2));
   }
   /// <summary>
   /// 游戏开始时的相机移动和初始化

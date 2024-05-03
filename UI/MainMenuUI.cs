@@ -19,6 +19,7 @@ public class MainMenuUI : MonoBehaviour
   /// 冒险模式关卡数
   /// </summary>
   public Text level;
+  public Button Store;//商城按钮
   void Start()
   {
     level.text = PlayerPrefs.GetInt("Level").ToString();
@@ -52,6 +53,11 @@ public class MainMenuUI : MonoBehaviour
   public void OnAdventureButtonClick()
   {
     AudioManger.Instance.PlayClip(Config.ButtonOnClick);
+    SceneManager.LoadScene(1);//:0是主菜单,1是冒险模式,2是商店
+  }
+  public void OnClickedStoreButton()
+  {
+    AudioManger.Instance.PlayClip(Config.ButtonOnClickTap);
     SceneManager.LoadScene(2);
   }
 }

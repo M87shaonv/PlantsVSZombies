@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 # region 卡牌状态和植物类型的枚举
 public enum CardState
@@ -146,6 +147,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
   public GameObject cardgray;
   public Image cardmask;
   public int CardId;
+  public String Introduce;//卡牌介绍
 
   /// <summary>
   /// 总冷却时间
@@ -162,10 +164,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
   /// </summary>
   [SerializeField]
   public int needsumpoint = 50;
-  void OnEnable()
-  {
-    CardId = (int)plantType;
-  }
+
   private void FixedUpdate()
   {
     if (!GameManger.gameStarted) return;
@@ -183,7 +182,6 @@ public class Card : MonoBehaviour, IPointerClickHandler
       default:
         break;
     }
-
   }
   /// <summary>
   /// 冷却状态,计算卡牌冷却时间
@@ -335,7 +333,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
     }
   }
 
-  public void AddCard()
+  public void AddCard()//添加卡牌到选择卡牌栏
   {
     if (hasLock) return;//如果锁定,则不执行
     if (UIManger.Instance.cardListUI.currentIndex > UIManger.Instance.cardListUI.Count - 1)
@@ -344,6 +342,7 @@ public class Card : MonoBehaviour, IPointerClickHandler
       return;
     }
 
+    UIManger.Instance.ShowCardIntroduce(Introduce);//显示卡牌介绍
     GameObject useCard = Instantiate(UIManger.Instance.cardListUI.cardList[CardId].gameObject);//克隆卡牌
     useCard.transform.Find("cardLight").GetComponent<Button>().enabled = false;//禁用卡牌按钮防止冲突
     useCard.transform.SetParent(UIManger.Instance.cardListUI.transform);

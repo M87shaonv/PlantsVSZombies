@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
+using System;
+using System.Linq;
+using Unity.VisualScripting;
 
 public class CardListUI : MonoBehaviour
 {
@@ -13,6 +15,31 @@ public class CardListUI : MonoBehaviour
   public int Count = 0;//卡片数量
   void Start()
   {
+    //初始化卡片列表
+    foreach (string cardName in PlayerPrefs.GetString("OwnedCard").Split(','))
+    {
+      if (!string.IsNullOrEmpty(cardName))//判断是否为空
+      {
+        Card card = Resources.Load($"Perfabs/{cardName}").GetComponent<Card>();
+        cardList.Add(card);
+        card.CardId = cardList.IndexOf(card);//给卡片编号
+      }
+    }
+    // string ownedCardData = PlayerPrefs.GetString("OwnedCard");
+    // string[] ownedCards = ownedCardData.Split(',');
+    // foreach (string cardName in ownedCards)
+    // {
+    //   GameObject cardPrefab = Resources.Load($"Perfabs/{cardName}") as GameObject;
+    //   if (cardPrefab != null)
+    //   {
+    //     Card cardComponent = cardPrefab.GetComponent<Card>();
+    //     if (cardComponent != null)
+    //     {
+    //       cardList.Add(cardComponent);
+    //       cardComponent.CardId = cardList.IndexOf(cardComponent); // 给卡片编号
+    //     }
+    //   }
+    // }
     Count = UIManger.Instance.cardListUI.cardList.Count;
     ChooseCardsList = new List<Card>();
     for (int i = 0; i < cardList.Count; i++)
@@ -22,6 +49,7 @@ public class CardListUI : MonoBehaviour
       Card.name = "Card" + i.ToString();
       Card.transform.Find("Bg").gameObject.SetActive(false);
     }
+    UIManger.Instance.selectCardBarUI.InitiCardBarUI();
   }
   /// <summary>
   /// 在外部调用来显示卡片列表

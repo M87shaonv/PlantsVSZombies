@@ -19,8 +19,9 @@ public class FirePeaBullet : PeaBullet
 
       other.GetComponent<Zombie>().TakeDamage(attack);
 
-      GameObject effect = GameObject.Instantiate(BulletHitManger.Instance.FirePeaBulletHit, transform.position, Quaternion.identity);//实例化特效
-      Destroy(effect, 0.5f);//销毁特效
+      GameObject effect = BufferPoolManager.Instance.GetObj(BulletHitManger.Instance.FirePeaBulletHit);
+      effect.transform.position = transform.position;
+      BulletHitManger.Instance.PushEffect(BulletHitManger.Instance.FirePeaBulletHit, effect, 0.5f);
     }
   }
 }

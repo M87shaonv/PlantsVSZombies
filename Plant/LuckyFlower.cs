@@ -13,18 +13,15 @@ public class LuckyFlower : Plant
   {
     base.OnEnable();
     gold = 0;
-  }
-  protected override void EnableUpdate()
-  {
     StartCoroutine(AddGold());
   }
+
   IEnumerator AddGold()
   {
-    while (AlterHP > 0)
+    if (AlterHP > 0)
     {
       yield return new WaitForSeconds(AddGoldTime);
       ProduceGold();
-
     }
   }
   void ProduceGold()//生产金币
@@ -37,7 +34,6 @@ public class LuckyFlower : Plant
     position.x += ditance;
 
     Gold.GetComponent<Gold>().JumpTo(position);
-
   }
   public override void Die()
   {
