@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &9132593591387147365
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2110013881408291364, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: Introduce
+      value: "\u6307\u6325\u5B98\u9601\u4E0B\u8FD8\u9700\u8981\u4ECB\u7ECD\u5417?(\u968F\u673A\u9633\u5149)"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110013881408291364, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: cardState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110013881408291364, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: coolingtime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2110013881408291364, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: needsumpoint
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374971786092098906, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_Name
+      value: CardSunFlower
+      objectReference: {fileID: 0}
+    - target: {fileID: 3445994048976751404, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 71.480774
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100.07312
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -203
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.144043
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718496059465839360, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8498267454237852731, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_Name
+      value: cardLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 8498267454237852731, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: eab5c228b6c82f240af68f4699f109e1, type: 3}
